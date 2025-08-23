@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ram Lalla Developers — Building Better Cities</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            beige: {
+              DEFAULT: '#E9DEC9',
+              50: '#FBF8F6',
+              100: '#F7F2EA',
+              200: '#EFE2C9',
+              300: '#E6D2A8',
+              500: '#D1B77E',
+              700: '#A6864F'
+            },
+            gold: '#C69C6D',
+            ink: '#1f2937',
+            paper: '#ffffff'
+          },
+          boxShadow: {
+            soft: '0 10px 30px rgba(31,41,55,0.06)',
+          },
+          fontFamily: {
+            sans: ['Inter','ui-sans-serif','system-ui','sans-serif'],
+            display: ['Playfair Display','serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Layout helpers */
+    :root{--sidebar-w:260px;}
+    body{background:linear-gradient(180deg,#fff #F8F4EE);}
+    .focus-ring{outline:none;box-shadow:0 0 0 3px rgba(198,156,109,0.18);}
+    .container-px{padding-left:clamp(1rem,3vw,2rem);padding-right:clamp(1rem,3vw,2rem);} 
+
+    /* Left & Right fixed sidebars (desktop) */
+    @media(min-width:1024px){
+      main{margin:0 var(--sidebar-w);} /* reserve space for both sidebars */
+      nav.left, nav.right{position:fixed;top:0;bottom:0;width:var(--sidebar-w);overflow:auto;background:linear-gradient(180deg,#F7F3EE, #F0E6D8);}
+      nav.left{left:0;border-right:1px solid rgba(0,0,0,0.06);}
+      nav.right{right:0;border-left:1px solid rgba(0,0,0,0.06);}
+    }
+
+    /* Mobile: sidebars become top stacked panels */
+    @media(max-width:1023px){
+      nav.left, nav.right{position:static;width:auto;border:none;background:transparent}
+      main{margin:0}
+    }
+
+    /* KMC-style left menu items */
+    .kmc-item{display:block;padding:12px 16px;border-bottom:1px solid rgba(0,0,0,0.05);color:var(--ink);font-weight:600}
+    .kmc-item small{display:block;font-weight:400;color:#6b7280}
+
+    /* Hero carousel */
+    .hero{height:clamp(400px, 50vh, 590px);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-bottom:1px solid rgba(0,0,0,0.04)}
+    .slides{display:flex;height:100%;width:300%;transition:transform 0.8s cubic-bezier(.2,.8,.2,1)}
+    .slide{flex:0 0 100%;height:100%;background-size:cover;background-position:center;position:relative}
+    .hero-overlay{position:absolute;left:50%;top:50%;transform:translate(-50%, -50%);text-align:left;color:#1f2937;width:90%;max-width:600px;}
+    .logo-badge{position:absolute;left:clamp(12px, 3vw, 24px);top:clamp(12px, 3vw, 18px);background:linear-gradient(90deg,#fff,rgba(255,255,255,0.6));padding:clamp(6px, 2vw, 8px);border-radius:8px;box-shadow:0 6px 18px rgba(31,41,55,0.08);display:flex;align-items:center;}
+
+    /* marquee */
+    .marq{overflow:hidden;white-space:nowrap}
+    .marq .inner{display:inline-block;animation:scroll 24s linear infinite}
+    @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+    /* Watermark styling */
+    .watermark-container {
+      position: relative;
+    }
+    
+    .watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(55%, 300px);
+      opacity: 0.06;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .content-over-watermark {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Mobile menu improvements */
+    .mobile-menu summary {
+      list-style: none;
+      cursor: pointer;
+    }
+    .mobile-menu summary::-webkit-details-marker {
+      display: none;
+    }
+
+  </style>
+</head>
+<body class="font-sans text-ink">
+
+  <!-- Left sidebar (KMC-like) - Desktop only -->
+  <nav class="left hidden lg:block">
+    <div class="px-4 pt-6 pb-4">
+      <div class="flex items-center gap-3">
+        <img src="lotus_transparent.png" alt="Ram Lalla Logo" class="w-12 h-12 rounded"/>
+        <div>
+          <div class="font-display text-lg">Ram Lalla Developers</div>
+          <div class="text-xs text-slate-600">Building Better sites</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="mt-6">
+      <a class="kmc-item" href="#">Municipal History</a>
+      <a class="kmc-item" href="#about">About Us</a>
+      <a class="kmc-item" href="#departments">Departments</a>
+      <a class="kmc-item" href="#contact">Contact</a>
+      <a class="kmc-item" href="#services">Core Services</a>
+      <a class="kmc-item" href="#projects">Projects</a>
+      <a class="kmc-item" href="#notices">Notices</a>
+      <a class="kmc-item" href="#tenders">Tender Notices</a>
+      <a class="kmc-item" href="#careers">Careers</a>
+      <a class="kmc-item" href="#grievance">Grievance</a>
+      <a class="kmc-item" href="#e-services">Online Services</a>
+      <a class="kmc-item" href="#parking">Parking</a>
+      <a class="kmc-item" href="#dashboard">Employee Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Right sidebar (KMC-like quick links / leader) - Desktop only -->
+  <nav class="right hidden lg:block">
+    <div class="px-4 pt-6 pb-4">
+      <div class="bg-white rounded-lg p-4 shadow-soft text-center">
+        <img src="images/ceo.jpg" alt="CEO" class="mx-auto w-28 h-28 rounded-lg object-cover border"/>
+        <div class="font-semibold mt-3">Chief Engineer</div>
+        <div class="text-sm text-slate-600">Ram Lalla Developers</div>
+      </div>
+      <div class="mt-6 bg-white rounded-lg p-3">
+        <div class="font-semibold text-sm mb-2">Quick Links</div>
+        <ul class="text-sm space-y-2">
+          <li><a href="#projects" class="text-amber-700 hover:underline">Featured Projects</a></li>
+          <li><a href="#about" class="text-amber-700 hover:underline">About Company</a></li>
+          <li><a href="#services" class="text-amber-700 hover:underline">Services</a></li>
+          <li><a href="#careers" class="text-amber-700 hover:underline">Careers</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Top utility strip (mobile & desktop) -->
+  <div class="w-full bg-gradient-to-r from-beige-100 to-beige-200 border-b lg:ml-0 lg:mr-0">
+    <div class="max-w-7xl mx-auto container-px flex items-center justify-between py-2 text-sm">
+      <div class="flex items-center gap-3">
+        <a href="#notices" class="text-amber-700 font-semibold">Notices</a>
+        <a href="#tenders" class="text-amber-700">Tenders</a>
+        <a href="#careers" class="text-amber-700">Careers</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <div id="google_translate_element"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu button -->
+  <div class="lg:hidden container-px py-3 bg-beige-100">
+    <details class="mobile-menu">
+      <summary class="font-semibold flex items-center justify-between p-3 bg-white rounded-lg shadow-soft">
+        <span>Menu</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </summary>
+      <nav class="mt-2 bg-white rounded-lg p-3 shadow-soft">
+        <a class="kmc-item" href="#">Municipal History</a>
+        <a class="kmc-item" href="#about">About Us</a>
+        <a class="kmc-item" href="#departments">Departments</a>
+        <a class="kmc-item" href="#contact">Contact</a>
+        <a class="kmc-item" href="#services">Core Services</a>
+        <a class="kmc-item" href="#projects">Projects</a>
+        <a class="kmc-item" href="#notices">Notices</a>
+        <a class="kmc-item" href="#tenders">Tender Notices</a>
+        <a class="kmc-item" href="#careers">Careers</a>
+        <a class="kmc-item" href="#grievance">Grievance</a>
+      </nav>
+    </details>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="relative">
+    <!-- Hero with sliding stock images and logo overlay -->
+    <section class="hero">
+      <div class="slides" id="slides">
+        <div class="slide" style="background-image:url('WhatsApp\ Image\ 2025-08-21\ at\ 17.13.45_525ee61d.jpg')"></div>
+        <div class="slide" style="background-image:url('images/hero2.png')"></div>
+        <div class="slide" style="background-image:url('images/hero3.jpg')"></div>
+      </div>
+
+      <div class="logo-badge">
+        <img src="lotus_transparent.png" alt="logo" class="w-10 h-10 lg:w-12 lg:h-12"/>
+        <div class="ml-2 lg:ml-3">
+          <div class="font-semibold text-sm lg:text-base">Ram Lalla Developers</div>
+          <div class="text-xs text-slate-600 hidden lg:block">Civic Infrastructure & Urban Projects</div>
+        </div>
+      </div>
+
+      <div class="hero-overlay p-4 lg:p-6 bg-white/80 rounded-lg backdrop-blur-sm shadow-soft">
+        <h1 class="font-display text-2xl lg:text-3xl">Building for the Nation</h1>
+        <p class="mt-2 lg:mt-3 text-xs lg:text-sm text-slate-700">We partner with government bodies and communities to deliver safe, durable and sustainable infrastructure. Explore our projects, services.</p>
+        <div class="mt-3 lg:mt-4 flex flex-wrap gap-2 lg:gap-3">
+          <a href="#projects" class="px-3 py-1.5 lg:px-4 lg:py-2 text-sm lg:text-base rounded-md bg-amber-500 text-white font-semibold">View Projects</a>
+          <a href="#contact" class="px-3 py-1.5 lg:px-4 lg:py-2 text-sm lg:text-base rounded-md border border-amber-200 text-amber-700">Contact Us</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Marquee Notices -->
+    <section class="bg-white border-t border-b">
+      <div class="max-w-6xl mx-auto container-px py-3 flex items-center gap-3">
+        <span class="inline-flex items-center gap-2 rounded-full bg-amber-100 text-amber-900 px-2 py-1 text-xs lg:text-sm font-semibold">Notice</span>
+        <div class="marq w-full">
+          <div class="inner text-sm lg:text-base">
+            <a href="#" class="mr-6 lg:mr-10">RFP: Community Hall Redevelopment — Phase II</a>
+            <a href="#" class="mr-6 lg:mr-10">Tender: Urban Drainage Network Mapping</a>
+            <a href="#" class="mr-6 lg:mr-10">Announcement: Public Consultation — Riverside Park</a>
+            <a href="#" class="mr-6 lg:mr-10">Awarded: Neighbourhood Park Project</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two-column content area with watermark -->
+    <div class="watermark-container">
+      <img src="ram2.jpg" alt="Watermark" class="watermark">
+      <section class="max-w-6xl mx-auto container-px py-8 lg:py-10 content-over-watermark">
+        <div class="grid lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 bg-white rounded-lg p-4 lg:p-6 shadow-soft">
+            <h2 class="font-display text-xl lg:text-2xl">About Ram Lalla Developers</h2>
+            <p class="mt-2 lg:mt-3 text-xs lg:text-sm text-slate-700">Ram Lalla Developers is committed to delivering professional infrastructure, housing and urban projects that help the nation grow. We follow clear procurement, compliance and environmental guidelines to ensure value and transparency.</p>
+
+            <h3 class="mt-4 lg:mt-6 font-semibold">Featured Projects</h3>
+            <div class="grid md:grid-cols-2 gap-3 lg:gap-4 mt-2 lg:mt-3">
+              <article class="rounded-lg overflow-hidden border">
+                <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200&auto=format&fit=crop" alt="project" class="w-full h-32 lg:h-40 object-cover"/>
+                <div class="p-3 lg:p-4">
+                  <div class="font-semibold text-sm lg:text-base">Riverside Housing Phase I</div>
+                  <div class="text-xs lg:text-sm text-slate-600 mt-1">G+12 residential towers with landscaped podium.</div>
+                </div>
+              </article>
+              <article class="rounded-lg overflow-hidden border">
+                <img src="https://images.unsplash.com/photo-1482192505345-5655af888cc4?q=80&w=1200&auto=format&fit=crop" alt="project" class="w-full h-32 lg:h-40 object-cover"/>
+                <div class="p-3 lg:p-4">
+                  <div class="font-semibold text-sm lg:text-base">Urban Street & Drainage</div>
+                  <div class="text-xs lg:text-sm text-slate-600 mt-1">Complete street with utility ducting & LED lighting.</div>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <aside class="bg-white rounded-lg p-4 lg:p-6 shadow-soft">
+            <h4 class="font-semibold">Quick Links</h4>
+            <ul class="text-xs lg:text-sm mt-2 lg:mt-3 space-y-1 lg:space-y-2 text-amber-700">
+              <li><a href="#notices" class="block py-1">Notices</a></li>
+              <li><a href="#tenders" class="block py-1">Tenders</a></li>
+              <li><a href="#careers" class="block py-1">Careers</a></li>
+              <li><a href="#grievance" class="block py-1">Grievance</a></li>
+            </ul>
+
+            <div class="mt-4 lg:mt-6">
+              <h4 class="font-semibold">Contact</h4>
+              <div class="text-xs lg:text-sm text-slate-600 mt-1 lg:mt-2">Kolkata, West Bengal</div>
+              <a class="block mt-1 lg:mt-2 text-amber-700 text-xs lg:text-sm" href="mailto:hello@ramlalla.dev">hello@ramlalla.dev</a>
+              <a class="block mt-1 text-amber-700 text-xs lg:text-sm" href="tel:+919999999999">+91 99999 99999</a>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </div>
+
+    <!-- Stats strip -->
+    <section class="bg-amber-700 text-white">
+      <div class="max-w-6xl mx-auto container-px py-6 lg:py-8 grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 text-center">
+        <div><div class="text-xl lg:text-2xl font-bold">10+ yrs</div><div class="text-white/90 text-xs lg:text-sm">Experience</div></div>
+        <div><div class="text-xl lg:text-2xl font-bold">120+</div><div class="text-white/90 text-xs lg:text-sm">Projects</div></div>
+        <div><div class="text-xl lg:text-2xl font-bold">30+</div><div class="text-white/90 text-xs lg:text-sm">Municipal Works</div></div>
+        <div><div class="text-xl lg:text-2xl font-bold">100%</div><div class="text-white/90 text-xs lg:text-sm">Safety compliant</div></div>
+      </div>
+    </section>
+
+    <!-- Footer content -->
+    <footer class="bg-beige-300 text-ink mt-6 border-t">
+      <div class="max-w-6xl mx-auto container-px py-8 lg:py-10 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="md:col-span-2 lg:col-span-1">
+          <div class="font-display text-lg">Ram Lalla Developers</div>
+          <p class="text-xs lg:text-sm text-slate-600 mt-2 lg:mt-3">Professional urban & infrastructure solutions for a resilient nation.</p>
+        </div>
+        <div>
+          <div class="font-semibold mb-2 text-sm lg:text-base">Quick Links</div>
+          <ul class="space-y-1 lg:space-y-2 text-xs lg:text-sm text-slate-700">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#e-services">e‑Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="font-semibold mb-2 text-sm lg:text-base">Resources</div>
+          <ul class="space-y-1 lg:space-y-2 text-xs lg:text-sm text-slate-700">
+            <li><a href="#notices">Notices</a></li>
+            <li><a href="#tenders">Tenders</a></li>
+            <li><a href="#careers">Careers</a></li>
+            <li><a href="#grievance">Grievance</a></li>
+          </ul>
+        </div>
+        <div class="md:col-span-2 lg:col-span-1">
+          <div class="font-semibold mb-2 text-sm lg:text-base">Accessibility</div>
+          <div class="flex gap-2">
+            <button class="px-3 py-2 bg-amber-600 text-white rounded text-xs lg:text-sm">High Contrast</button>
+            <button class="px-3 py-2 bg-amber-600 text-white rounded text-xs lg:text-sm">A+</button>
+          </div>
+          <p class="text-xs text-slate-600 mt-3 lg:mt-4">
+            © <span id="year"></span> Ram Lalla Developers. All rights reserved. 
+            Created by <a href="https://abirkayal.netlify.app" target="_blank" class="text-amber-700 hover:underline">Abir Kayal</a>
+          </p>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Simple carousel
+    (function(){
+      const slides = document.getElementById('slides');
+      const total = slides.children.length;
+      let idx=0;
+      setInterval(()=>{
+        idx = (idx+1)%total;
+        slides.style.transform = `translateX(-${idx*100}%)`;
+      },5000);
+    })();
+
+    // Google Translate integration — show a dropdown limited to Indian languages (20)
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, includedLanguages: 'hi,bn,te,mr,ta,ur,gu,kn,ml,or,pa,as,ne,mai,sd,ks,mni,sa,sat,snd'}, 'google_translate_element');
+    }
+
+    // load google translate script
+    (function(){
+      var s = document.createElement('script');
+      s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      document.head.appendChild(s);
+    })();
+
+    // set year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>

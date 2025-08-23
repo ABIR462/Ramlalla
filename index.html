@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ram Lalla Developers | Loading</title>
+  <!-- Import brand-like fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+  --gold: #d4af37;
+  --gold-dark: #b08d2c;
+  --dark-bg: #213637; /* updated exact background color */
+  --gradient-bg: #213637; /* solid background instead of gradient */
+}
+
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--gradient-bg);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: var(--gold);
+    }
+
+    .splash-container {
+      text-align: center;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Logo */
+    .logo-container {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 1.5rem;
+      opacity: 0;
+      animation: fadeInUp 1.5s ease forwards;
+    }
+
+    .logo-img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
+    }
+
+    @keyframes fadeInUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Company name (letter by letter fade) */
+    .company-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.6rem;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+      letter-spacing: 3px; /* slight letter spacing */
+    }
+
+    .company-name span {
+      opacity: 0;
+      display: inline-block;
+      transform: translateY(20px);
+      animation: fadeLetter 1s forwards;
+    }
+
+    .space {
+      display: inline-block;
+      width: 15px; /* <-- adjust spacing between words */
+    }
+
+    @keyframes fadeLetter {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tagline */
+    .tagline {
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #e1e1e1;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
+      animation-delay: 2.5s;
+    }
+
+    /* Loading bar */
+    .loading-container {
+      width: 280px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
+      animation-delay: 3s;
+    }
+
+    .loading-bar {
+      height: 6px;
+      width: 100%;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .loading-progress {
+      height: 100%;
+      width: 0%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+      animation: loading 3s ease-in-out forwards;
+      animation-delay: 3.2s;
+    }
+
+    @keyframes loading {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    .loading-text {
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <!-- Splash card -->
+  <div class="splash-container">
+    <div class="logo-container">
+      <img src="lotus_transparent.png" alt="Lotus Logo" class="logo-img">
+    </div>
+
+    <!-- Company Name: letters animated -->
+    <h1 class="company-name" id="companyName"></h1>
+
+    <p class="tagline">An Initiation Towards the Development of Nation</p>
+
+    <div class="loading-container">
+      <div class="loading-bar">
+        <div class="loading-progress"></div>
+      </div>
+      <p class="loading-text">Loading...</p>
+    </div>
+  </div>
+
+  <script>
+    // Animate letters one by one with word spacing
+    const companyName = "RAM LALLA DEVELOPERS";
+    const container = document.getElementById("companyName");
+
+    companyName.split("").forEach((letter, index) => {
+      if (letter === " ") {
+        const space = document.createElement("span");
+        space.className = "space"; // apply spacing for words
+        container.appendChild(space);
+      } else {
+        const span = document.createElement("span");
+        span.textContent = letter;
+        span.style.animationDelay = `${index * 0.08 + 1.2}s`;
+        container.appendChild(span);
+      }
+    });
+    // Redirect after loading completes
+        setTimeout(() => {
+            window.location.href = "Ramlalla.html"; // Replace with your actual website URL
+        }, 4500); 
+  </script>
+</body>
+</html>
+
+
+
+  
+
+
+
+
+
+
+
