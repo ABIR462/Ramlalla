@@ -14,6 +14,89 @@
   --gradient-bg: #213637; /* solid background instead of gradient */
 }
 
+/* Logo */
+.logo-container {
+  width: 28vw;   /* responsive: ~30% of viewport width */
+  max-width: 160px;
+  height: auto;
+  margin: 0 auto 1.5rem;
+  opacity: 0;
+  animation: fadeInUp 1.5s ease forwards;
+}
+
+.logo-img {
+  width: 100%;
+  height: auto;
+}
+
+/* Company name */
+.company-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.6rem, 6vw, 2.6rem); /* auto-resizes */
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+/* Tagline */
+.tagline {
+  font-size: clamp(0.8rem, 3vw, 1rem);
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #e1e1e1;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeIn 1.5s ease forwards;
+  animation-delay: 2.5s;
+}
+
+/* Loading */
+.loading-container {
+  width: 70%;
+  max-width: 280px;
+  margin: 0 auto;
+  opacity: 0;
+  animation: fadeIn 1.5s ease forwards;
+  animation-delay: 3s;
+}
+
+.loading-bar {
+  height: 6px;
+  width: 100%;
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.loading-text {
+  font-size: clamp(0.6rem, 2.5vw, 0.8rem);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #ccc;
+  text-align: center;
+}
+
+/* Extra polish for smaller mobiles */
+@media (max-width: 480px) {
+  .logo-container {
+    width: 35vw;
+    max-width: 120px;
+  }
+  .company-name {
+    letter-spacing: 1.5px;
+  }
+  .tagline {
+    letter-spacing: 1.2px;
+  }
+  .loading-bar {
+    height: 4px;
+  }
+}
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -57,7 +140,9 @@
     @keyframes fadeInUp {
       from { transform: translateY(40px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
-    }
+    }         
+      
+    
 
     /* Company name (letter by letter fade) */
     .company-name {
@@ -187,10 +272,6 @@
 
 
   
-
-
-
-
 
 
 
