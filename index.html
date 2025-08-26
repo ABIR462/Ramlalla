@@ -1,118 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ram Lalla Developers | Loading</title>
-  <!-- Import brand-like fonts -->
+  
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-  --gold: #d4af37;
-  --gold-dark: #b08d2c;
-  --dark-bg: #213637; /* updated exact background color */
-  --gradient-bg: #213637; /* solid background instead of gradient */
-}
+      --gold: #d4af37;
+      --gold-dark: #b08d2c;
+      --dark-bg: #213637;
+    }
 
-/* Logo */
-.logo-container {
-  width: 28vw;   /* responsive: ~30% of viewport width */
-  max-width: 160px;
-  height: auto;
-  margin: 0 auto 1.5rem;
-  opacity: 0;
-  animation: fadeInUp 1.5s ease forwards;
-}
-
-.logo-img {
-  width: 100%;
-  height: auto;
-}
-
-/* Company name */
-.company-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.6rem, 6vw, 2.6rem); /* auto-resizes */
-  font-weight: 600;
-  color: var(--gold);
-  margin-bottom: 0.5rem;
-  letter-spacing: 2px;
-  text-align: center;
-}
-
-/* Tagline */
-.tagline {
-  font-size: clamp(0.8rem, 3vw, 1rem);
-  font-weight: 400;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #e1e1e1;
-  margin-bottom: 2rem;
-  opacity: 0;
-  animation: fadeIn 1.5s ease forwards;
-  animation-delay: 2.5s;
-}
-
-/* Loading */
-.loading-container {
-  width: 70%;
-  max-width: 280px;
-  margin: 0 auto;
-  opacity: 0;
-  animation: fadeIn 1.5s ease forwards;
-  animation-delay: 3s;
-}
-
-.loading-bar {
-  height: 6px;
-  width: 100%;
-  background-color: rgba(255,255,255,0.1);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-bottom: 1rem;
-}
-
-.loading-text {
-  font-size: clamp(0.6rem, 2.5vw, 0.8rem);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: #ccc;
-  text-align: center;
-}
-
-/* Extra polish for smaller mobiles */
-@media (max-width: 480px) {
-  .logo-container {
-    width: 35vw;
-    max-width: 120px;
-  }
-  .company-name {
-    letter-spacing: 1.5px;
-  }
-  .tagline {
-    letter-spacing: 1.2px;
-  }
-  .loading-bar {
-    height: 4px;
-  }
-}
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       font-family: 'Montserrat', sans-serif;
-      background: var(--gradient-bg);
+      background: var(--dark-bg);
+      color: var(--gold);
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      color: var(--gold);
     }
 
     .splash-container {
       text-align: center;
+      width: 90%;
+      max-width: 480px;
+      padding: 20px;
       animation: fadeIn 1s ease forwards;
     }
 
@@ -123,35 +47,31 @@
 
     /* Logo */
     .logo-container {
-      width: 160px;
-      height: 160px;
-      margin: 0 auto 1.5rem;
-      opacity: 0;
-      animation: fadeInUp 1.5s ease forwards;
+      width: 30vw;
+      max-width: 140px;
+      margin: 0 auto 1.2rem;
+      animation: fadeInUp 1.2s ease forwards;
     }
 
     .logo-img {
       width: 100%;
       height: auto;
-      object-fit: contain;
       filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
     }
 
     @keyframes fadeInUp {
       from { transform: translateY(40px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
-    }         
-      
-    
+    }
 
-    /* Company name (letter by letter fade) */
+    /* Company Name - Subheading */
     .company-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.6rem;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
       font-weight: 600;
-      color: var(--gold);
-      margin-bottom: 0.5rem;
-      letter-spacing: 3px; /* slight letter spacing */
+      margin-bottom: 0.8rem;
+      letter-spacing: 1.5px;
+      line-height: 1.4;
     }
 
     .company-name span {
@@ -161,31 +81,34 @@
       animation: fadeLetter 1s forwards;
     }
 
-    .space {
-      display: inline-block;
-      width: 15px; /* <-- adjust spacing between words */
+    @keyframes fadeLetter {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    @keyframes fadeLetter {
-      to { opacity: 1; transform: translateY(0); }
+    .space {
+      display: inline-block;
+      width: 0.4em;
     }
 
     /* Tagline */
     .tagline {
-      font-size: 1rem;
-      font-weight: 400;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      font-size: clamp(0.75rem, 2vw, 1rem);
       color: #e1e1e1;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
       margin-bottom: 2rem;
       opacity: 0;
       animation: fadeIn 1.5s ease forwards;
-      animation-delay: 2.5s;
+      animation-delay: 2.4s;
     }
 
     /* Loading bar */
     .loading-container {
-      width: 280px;
+      width: 80%;
+      max-width: 300px;
       margin: 0 auto;
       opacity: 0;
       animation: fadeIn 1.5s ease forwards;
@@ -194,8 +117,7 @@
 
     .loading-bar {
       height: 6px;
-      width: 100%;
-      background-color: rgba(255,255,255,0.1);
+      background-color: rgba(255, 255, 255, 0.1);
       border-radius: 3px;
       overflow: hidden;
       margin-bottom: 1rem;
@@ -211,31 +133,49 @@
     }
 
     @keyframes loading {
-      0% { width: 0%; }
-      100% { width: 100%; }
+      from { width: 0%; }
+      to { width: 100%; }
     }
 
     .loading-text {
-      font-size: 0.8rem;
-      letter-spacing: 3px;
+      font-size: clamp(0.65rem, 1.8vw, 0.8rem);
       text-transform: uppercase;
+      letter-spacing: 1.5px;
       font-weight: 500;
       color: #ccc;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 480px) {
+      .logo-container {
+        width: 35vw;
+        max-width: 100px;
+      }
+
+      .tagline {
+        margin-bottom: 1.5rem;
+      }
+
+      .loading-bar {
+        height: 4px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Splash card -->
   <div class="splash-container">
+    <!-- Logo -->
     <div class="logo-container">
-      <img src="lotus_transparent.png" alt="Lotus Logo" class="logo-img">
+      <img src="lotus_transparent.png" alt="Lotus Logo" class="logo-img" />
     </div>
 
-    <!-- Company Name: letters animated -->
-    <h1 class="company-name" id="companyName"></h1>
+    <!-- Company Name -->
+    <h2 class="company-name" id="companyName"></h2>
 
+    <!-- Tagline -->
     <p class="tagline">An Initiation Towards the Development of Nation</p>
 
+    <!-- Loading bar -->
     <div class="loading-container">
       <div class="loading-bar">
         <div class="loading-progress"></div>
@@ -245,14 +185,14 @@
   </div>
 
   <script>
-    // Animate letters one by one with word spacing
+    // Animate each letter with delay
     const companyName = "RAM LALLA DEVELOPERS";
     const container = document.getElementById("companyName");
 
     companyName.split("").forEach((letter, index) => {
       if (letter === " ") {
         const space = document.createElement("span");
-        space.className = "space"; // apply spacing for words
+        space.className = "space";
         container.appendChild(space);
       } else {
         const span = document.createElement("span");
@@ -261,10 +201,11 @@
         container.appendChild(span);
       }
     });
-    // Redirect after loading completes
-        setTimeout(() => {
-            window.location.href = "Ramlalla.html"; // Replace with your actual website URL
-        }, 4500); 
+
+    // Redirect after animation
+    setTimeout(() => {
+      window.location.href = "Ramlalla.html";
+    }, 4500);
   </script>
 </body>
 </html>
@@ -272,6 +213,7 @@
 
 
   
+
 
 
 
