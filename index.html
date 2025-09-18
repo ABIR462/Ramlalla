@@ -1511,8 +1511,12 @@
     
     
     
-
+if (!sessionStorage.getItem("splashShown")) {
+    sessionStorage.setItem("splashShown", "true");
+    window.location.href = "splash.html";
+  }
 
     </script>
 </body>
+
 </html>
