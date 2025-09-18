@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1200, initial-scale=0.4, user-scalable=yes" />
+    <title>About Us - Ram Lalla Developers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        beige: {
+                            DEFAULT: '#E9DEC9',
+                            50: '#FBF8F6',
+                            100: '#F7F2EA',
+                            200: '#EFE2C9',
+                            300: '#E6D2A8',
+                            500: '#D1B77E',
+                            700: '#A6864F'
+                        },
+                        gold: '#C69C6D',
+                        ink: '#1f2937',
+                        paper: '#ffffff'
+                    },
+                    boxShadow: {
+                        soft: '0 10px 30px rgba(31,41,55,0.06)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter','ui-sans-serif','system-ui','sans-serif'],
+                        display: ['Playfair Display','serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Fixed layout container */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+            min-width: 1200px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .main-container {
+            width: 1200px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Header with search */
+        .header-bar {
+            position: relative;
+            z-index: 30;
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 25px;
+            background: rgba(255,255,255,0.95);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: rgba(255,255,255,0.8);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Language selector */
+        .language-selector {
+            position: relative;
+        }
+
+        .language-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: white;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-1px);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            padding: 8px;
+            min-width: 200px;
+            z-index: 1000;
+            display: none;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .language-dropdown.show {
+            display: block;
+            animation: fadeInScale 0.2s ease;
+        }
+
+        .language-option {
+            display: block;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            color: #374151;
+            text-decoration: none;
+        }
+
+        .language-option:hover {
+            background: #f3f4f6;
+            color: #8B4513;
+        }
+
+        .language-option.active {
+            background: #8B4513;
+            color: white;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Sidebar styles */
+        .sidebar-left, .sidebar-right {
+            position: absolute;
+            top: 60px;
+            bottom: 0;
+            width: 220px;
+            background: linear-gradient(180deg, #F7F3EE, #F0E6D8);
+            overflow: visible;
+            z-index: 20;
+        }
+
+        .sidebar-left {
+            left: 0;
+            border-right: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .sidebar-right {
+            right: 0;
+            border-left: 1px solid rgba(0,0,0,0.06);
+        }
+
+        /* Main content area */
+        .content-area {
+            margin: 60px 220px 0 220px;
+            min-height: calc(100vh - 60px);
+            background: white;
+        }
+
+        /* Navigation items */
+        .nav-item {
+            display: block;
+            padding: 14px 20px;
+            color: #374151;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 14px;
+            position: relative;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: linear-gradient(135deg, rgba(139,69,19,0.1) 0%, rgba(160,82,45,0.08) 100%);
+            color: #8B4513;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(139,69,19,0.15) 0%, rgba(255,255,255,0.9) 100%);
+            color: #8B4513;
+            font-weight: 700;
+            border-left: 4px solid #8B4513;
+            box-shadow: inset 0 0 20px rgba(139,69,19,0.1);
+        }
+
+        /* Content sections */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hide Google Translate default elements */
+        .goog-te-banner-frame,
+        .goog-te-menu-frame {
+            display: none !important;
+        }
+
+        .goog-te-combo {
+            display: none !important;
+        }
+
+        body {
+            top: 0 !important;
+        }
+
+        #google_translate_element {
+            display: none !important;
+        }
+
+        /* Logo styles */
+        .logo-container {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            padding: 8px;
+        }
+
+        .logo-container:hover {
+            background: rgba(198, 156, 109, 0.1);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(198, 156, 109, 0.2);
+        }
+
+        .logo-image {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #C69C6D, #D1B77E);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(198, 156, 109, 0.3);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            body {
+                min-width: auto;
+            }
+            
+            .main-container {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Professional Header Bar -->
+        <header class="header-bar">
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #C69C6D, #D1B77E); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; border: 2px solid rgba(255,255,255,0.3);">
+                    RL
+                </div>
+                <div style="color: white;">
+                    <div style="font-weight: bold; font-size: 18px;">Ram Lalla Developers</div>
+                    <div style="font-size: 14px; opacity: 0.9;">An initiation towards the development of the nation</div>
+                </div>
+            </div>
+
+            
+            
+            <div class="language-selector">
+                <button class="language-btn" id="languageToggle">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                    <i class="fas fa-chevron-down" style="font-size: 10px;"></i>
+                </button>
+                <div class="language-dropdown" id="languageDropdown">
+                    <a href="#" class="language-option active" data-lang="en">English</a>
+                    <a href="#" class="language-option" data-lang="hi">हिंदी (Hindi)</a>
+                    <a href="#" class="language-option" data-lang="bn">বাংলা (Bengali)</a>
+                    <a href="#" class="language-option" data-lang="te">తెలుగు (Telugu)</a>
+                    <a href="#" class="language-option" data-lang="mr">मराठी (Marathi)</a>
+                    <a href="#" class="language-option" data-lang="ta">தமிழ் (Tamil)</a>
+                    <a href="#" class="language-option" data-lang="ur">اردو (Urdu)</a>
+                    <a href="#" class="language-option" data-lang="gu">ગુજરાતી (Gujarati)</a>
+                </div>
+            </div>
+            
+            <div id="google_translate_element" class="hidden"></div>
+        </header>
+
+        <!-- Left sidebar navigation -->
+        <nav class="sidebar-left">
+            <div style="padding: 16px;">
+                <!-- Logo Section -->
+                <div class="logo-container" onclick="navigateToHome()" title="Go to Home Page">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #C69C6D, #D1B77E); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; box-shadow: 0 2px 8px rgba(198, 156, 109, 0.3);">
+                            RL
+                        </div>
+                        <div>
+                            <div style="font-family: 'Playfair Display', serif; font-size: 16px; font-weight: bold; color: #92400e;">Ram Lalla Developers</div>
+                            <div style="font-size: 12px; color: #64748b;">Building Better Cities</div>
+                            <div style="font-size: 10px; color: #C69C6D; font-weight: 500; margin-top: 4px;">Click to go Home</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <a class="nav-item nav-link active" href="#company" data-target="company">
+                    <i class="fas fa-building" style="margin-right: 8px;"></i>About Us
+                </a>
+                <a class="nav-item nav-link" href="#vastu" data-target="vastu">
+                    <i class="fas fa-compass" style="margin-right: 8px;"></i>Vastu Compliance
+                </a>
+                <a class="nav-item nav-link" href="#design" data-target="design">
+                    <i class="fas fa-drafting-compass" style="margin-right: 8px;"></i>Modern Design
+                </a>
+                <a class="nav-item nav-link" href="#heritage" data-target="heritage">
+                    <i class="fas fa-landmark" style="margin-right: 8px;"></i>Heritage Touch
+                </a>
+                <a class="nav-item nav-link" href="#delivery" data-target="delivery">
+                    <i class="fas fa-clock" style="margin-right: 8px;"></i>Timely Delivery
+                </a>
+                <a class="nav-item nav-link" href="#legal" data-target="legal">
+                    <i class="fas fa-gavel" style="margin-right: 8px;"></i>Legal Clarity
+                </a>
+                <a class="nav-item nav-link" href="#choose" data-target="choose">
+                    <i class="fas fa-star" style="margin-right: 8px;"></i>Why Choose Us
+                </a>
+                <a class="nav-item nav-link" href="#quality" data-target="quality">
+                    <i class="fas fa-award" style="margin-right: 8px;"></i>Quality Assurance
+                </a>
+            </div>
+        </nav>
+
+        <!-- Right sidebar -->
+        <nav class="sidebar-right">
+            <div style="padding: 16px; padding-top: 24px;">
+                <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 10px 30px rgba(31,41,55,0.06); text-align: center;">
+                    <div style="margin: 0 auto; width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, #fef3c7, #fde68a); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                        <i class="fas fa-user-tie" style="font-size: 32px; color: #92400e;"></i>
+                    </div>
+                    <div style="font-weight: 600; margin-top: 12px;">Chief Engineer</div>
+                    <div style="font-size: 14px; color: #64748b;">Ram Lalla Developers</div>
+                </div>
+                
+                <div style="margin-top: 16px; background: white; border-radius: 12px; padding: 12px;">
+                    <div style="font-weight: 600; font-size: 14px; margin-bottom: 8px;">Quick Links</div>
+                    <ul style="font-size: 14px; list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 4px;"><a href="#company" class="nav-link" data-target="company" style="color: #92400e; text-decoration: none;">About Company</a></li>
+                        <li style="margin-bottom: 4px;"><a href="#choose" class="nav-link" data-target="choose" style="color: #92400e; text-decoration: none;">Why Choose Us</a></li>
+                        <li style="margin-bottom: 4px;"><a href="#quality" class="nav-link" data-target="quality" style="color: #92400e; text-decoration: none;">Quality Assurance</a></li>
+                        <li><a href="ramlalla.html" style="color: #92400e; text-decoration: none;">← Back to Home</a></li>
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 16px; background: white; border-radius: 12px; padding: 12px;">
+                    <div style="font-weight: 600; font-size: 14px; margin-bottom: 8px;">Services</div>
+                    <ul style="font-size: 14px; list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 4px;"><a href="#notices" style="color: #92400e; text-decoration: none;">Notices</a></li>
+                        <li style="margin-bottom: 4px;"><a href="#tenders" style="color: #92400e; text-decoration: none;">Tenders</a></li>
+                        <li style="margin-bottom: 4px;"><a href="#careers" style="color: #92400e; text-decoration: none;">Careers</a></li>
+                        <li><a href="#grievance" style="color: #92400e; text-decoration: none;">Grievance</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main content area -->
+        <div class="content-area">
+            <!-- Content sections -->
+            <div style="padding: 32px 24px;">
+                
+                <!-- Company Section -->
+                <div id="company" class="content-section active">
+                    <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(31,41,55,0.06); margin-bottom: 24px;">
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 32px; color: #1f2937; border-bottom: 2px solid #C69C6D; padding-bottom: 8px; display: inline-block;">About the Company</h2>
+                        <p style="margin-top: 16px; color: #475569;">Ram Lalla Developers Private Limited is a visionary company committed to contributing toward the development of the nation. With a focus on sustainable and innovative construction practices, the company aims to transform the infrastructure landscape by delivering high-quality projects that cater to the needs of modern society.</p>
+                        <p style="margin-top: 12px; color: #475569;">By prioritizing eco-friendly designs and utilizing cutting-edge technology, Ram Lalla Developers strives to build not only structures but also communities that foster growth, inclusivity, and prosperity. Their dedication to excellence and community welfare positions them as a key player in shaping a more progressive and sustainable future for the country.</p>
+                        
+                        <div style="margin-top: 24px; background: linear-gradient(135deg, #fef7ed, #fed7aa); border-radius: 12px; padding: 24px;">
+                            <h3 style="font-family: 'Playfair Display', serif; font-size: 24px; color: #1f2937; margin-bottom: 16px;">Our Mission</h3>
+                            <p style="color: #475569;">To create exceptional living and working spaces that blend modern innovation with traditional values, contributing to the nation's growth while maintaining our commitment to sustainability and cultural heritage.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vastu Compliance Section -->
+                <div id="vastu" class="content-section">
+                    <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(31,41,55,0.06); margin-bottom: 24px;">
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 32px; color: #1f2937; border-bottom: 2px solid #C69C6D; padding-bottom: 8px; display: inline-block;">Vastu Compliance</h2>
+                        <p style="margin-top: 16px; color: #475569;">Ram Lalla Developers have garnered a reputation for their meticulous attention to Vastu compliance in their architectural designs. Vastu Shastra, an ancient Indian science of architecture, emphasizes harmony between nature and the built environment.</p>
+                        <p style="margin-top: 12px; color: #475569;">By integrating these principles, Ram Lalla Developers ensure that their projects not only meet contemporary design standards but also promote positive energy and well-being for occupants. Their commitment to Vastu compliance involves careful consideration of spatial orientation, layout, and structural elements, ensuring that homes and commercial spaces foster prosperity, health, and happiness.</p>
+                        <p style="margin-top: 12px; color: #475569;">This holistic approach not only appeals to traditional values but also enhances the overall appeal and functionality of the spaces they create.</p>
+                    </div>
+                </div>
+
+                <!-- Modern Design Section -->
+                <div id="design" class="content-section">
+                    <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(31,41,55,0.06); margin-bottom: 24px;">
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 32px; color: #1f2937; border-bottom: 2px solid #C69C6D; padding-bottom: 8px; display: inline-block;">Modern Design</h2>
+                        <p style="margin-top: 16px; color: #475569;">Ram Lalla Developers has carved a niche in the real estate market with their commitment to modern design principles. Their approach is characterized by a seamless blend of functionality and aesthetics, ensuring that each project not only meets contemporary needs but also enhances the living experience.</p>
+                        <p style="margin-top: 12px; color: #475569;">By incorporating sustainable materials and innovative architectural techniques, Ram Lalla Developers create spaces that are both eco-friendly and visually striking. Their designs often feature open floor plans, large windows for natural light, and smart home technologies, catering to the evolving preferences of today's homeowners.</p>
+                        <p style="margin-top: 12px; color: #475569;">With a focus on quality craftsmanship and attention to detail, Ram Lalla Developers continue to set benchmarks in the industry, delivering homes that embody modern elegance and practicality.</p>
+                    </div>
+                </div>
+
+                <!-- Heritage Touch Section -->
+                <div id="heritage" class="content-section">
+                    <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(31,41,55,0.06); margin-bottom: 24px;">
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 32px; color: #1f2937; border-bottom: 2px solid #C69C6D; padding-bottom: 8px; display: inline-block;">Heritage Touch</h2>
+                        <p style="margin-top: 16px; color: #475569;">Ram Lalla Developers' "Heritage Touch" project is a fascinating endeavor that seeks to blend modern living with cultural and historical richness. By integrating traditional architectural elements and design philosophies into contemporary spaces, this project aims to preserve and celebrate the cultural heritage of the region.</p>
+                        <p style="margin-top: 12px; color: #475569;">The developers focus on using sustainable materials and techniques, ensuring that the structures not only honor the past but also contribute to a sustainable future. This approach appeals to those who value the charm of heritage aesthetics while enjoying the comforts and conveniences of modern living.</p>
+                        <p style="margin-top: 12px; color: #475569;">Overall, "Heritage Touch" represents a thoughtful fusion of history and innovation, offering a unique living experience that respects and revitalizes cultural legacies.</p>
+                    </div>
+                </div>
+
+                <!-- Timely Delivery Section -->
+                <div id="delivery" class="content-section">
+                    <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(31,41,55,0.06); margin-bottom: 24px;">
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 32px; color: #1f2937; border-bottom: 2px solid #C69C6D; padding-bottom: 8px; display: inline-block;">Timely Delivery</h2>
+                        <p style="margin-top: 16px; color: #475569;">Ram Lalla Developers has built a reputation for its commitment to timely delivery, a critical factor that sets them apart in the competitive real estate industry. Meeting project deadlines not only reflects their operational efficiency but also builds trust and satisfaction among clients and investors.</p>
+                        <p style="margin-top: 12px; color: #475569;">By employing meticulous project management strategies, leveraging modern construction technologies, and maintaining clear communication with all stakeholders, Ram Lalla Developers ensures that their projects are completed on schedule without compromising on quality.</p>
+                        <p style="margin-top: 12px; color: #475569;">This reliability in delivering projects on time is a testament to their dedication to excellence and customer satisfaction.</p>
+                    </div>
+                </div>
+
+                <!-- Legal Clarity Section -->
+                <div id="legal" class="content-section">
+                    <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(31,41,55,0.06); margin-bottom: 24px;">
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 32px; color: #1f2937; border-bottom: 2px solid #C69C6D; padding-bottom: 8px; display: inline-block;">Legal Clarity</h2>
+                        <p style="margin-top: 16px; color: #475569;">Ram Lalla Developers, like any real estate development company, must navigate a complex web of legal considerations to ensure their projects are compliant and successful. Legal clarity in this context involves understanding and adhering to zoning laws, environmental regulations, building codes, and property rights.</p>
+                        <p style="margin-top: 12px; color: #475569;">It also entails securing necessary permits and licenses, as well as drafting clear contracts with stakeholders such as contractors, buyers, and local authorities. Staying informed about changes in legislation and maintaining transparent communication with legal advisors are crucial steps in avoiding potential legal disputes and ensuring smooth operations.</p>
+                        <p style="margin-top: 12px; color: #475569;">By prioritizing legal clarity, Ram Lalla Developers can protect their interests and maintain a strong reputation in the competitive real estate market.</p>
+                    </div>
+                </div>
+
+                <!-- Why Choose Us Section -->
+                <div id="choose" class="content-section">
+                    <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(31,41,55,0.06); margin-bottom: 24px;">
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 32px; color: #1f2937; border-bottom: 2px solid #C69C6D; padding-bottom: 8px; display: inline-block;">Why Choose Ram Lalla Developers</h2>
+                        <p style="margin-top: 16px; color: #475569;">Choosing Ram Lalla Developers can be a wise decision for a variety of reasons. Firstly, they are known for their commitment to quality and attention to detail in every project they undertake. Whether it's residential, commercial, or mixed-use developments, they consistently deliver superior craftsmanship and innovative design.</p>
+                        <p style="margin-top: 12px; color: #475569;">Moreover, their reputation is built on transparency and integrity, ensuring that clients are well-informed and involved throughout the construction process. Additionally, Ram Lalla Developers prioritize sustainability and incorporate eco-friendly practices and materials in their projects, reflecting a commitment to environmental responsibility.</p>
+                        <p style="margin-top: 12px; color: #475569;">Their experienced team is dedicated to customer satisfaction, providing personalized service and support to meet the specific needs and preferences of every client. With a proven track record of success and a portfolio of diverse and successful projects, Ram Lalla Developers stand out as a reliable and trustworthy choice in the real estate industry.</p>
+                    </div>
+                </div>
+
+                <!-- Quality Assurance Section -->
+                <div id="quality" class="content-section">
+                    <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(31,41,55,0.06); margin-bottom: 24px;">
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 32px; color: #1f2937; border-bottom: 2px solid #C69C6D; padding-bottom: 8px; display: inline-block;">About Quality Assurance</h2>
+                        <p style="margin-top: 16px; color: #475569;">Quality assurance (QA) in the context of Ram Lalla Developers, or any real estate development company, is a critical process that ensures the highest standards are maintained throughout the construction and delivery of projects. QA involves a systematic approach to evaluating and improving the construction process, materials, and final outcomes to meet or exceed customer expectations and regulatory requirements.</p>
+                        <p style="margin-top: 12px; color: #475569;">For Ram Lalla Developers, this could mean implementing rigorous testing protocols, regular site inspections, and audits at various stages of development, from initial design to final construction. By focusing on quality assurance, the company can ensure that its projects are not only structurally sound but also aesthetically pleasing and environmentally sustainable, ultimately enhancing customer satisfaction and building a strong reputation in the real estate industry.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer content -->
+            <footer style="background: #E6D2A8; color: #1f2937; border-top: 1px solid rgba(0,0,0,0.1); position: relative; z-index: 20;">
+                <div style="padding: 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; cursor: pointer;" onclick="navigateToHome()">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #fbbf24, #f59e0b); display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-home" style="color: white; font-size: 14px;"></i>
+                            </div>
+                            <div style="font-family: 'Playfair Display', serif; font-size: 18px;">Ram Lalla Developers</div>
+                        </div>
+                        <p style="font-size: 14px; color: #64748b; margin-top: 12px;">Professional urban & infrastructure solutions for a resilient nation.</p>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 8px; font-size: 16px;">Quick Links</div>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #475569;">
+                            <li style="margin-bottom: 8px;"><a href="#company" class="nav-link" data-target="company" style="color: #92400e; text-decoration: none;">About Us</a></li>
+                            <li style="margin-bottom: 8px;"><a href="#choose" class="nav-link" data-target="choose" style="color: #92400e; text-decoration: none;">Why Choose Us</a></li>
+                            <li style="margin-bottom: 8px;"><a href="#quality" class="nav-link" data-target="quality" style="color: #92400e; text-decoration: none;">Quality</a></li>
+                            <li><a href="index.html" style="color: #92400e; text-decoration: none;">← Home</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 8px; font-size: 16px;">Resources</div>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #475569;">
+                            <li style="margin-bottom: 8px;"><a href="#notices" style="color: #92400e; text-decoration: none;">Notices</a></li>
+                            <li style="margin-bottom: 8px;"><a href="#tenders" style="color: #92400e; text-decoration: none;">Tenders</a></li>
+                            <li style="margin-bottom: 8px;"><a href="#careers" style="color: #92400e; text-decoration: none;">Careers</a></li>
+                            <li><a href="#grievance" style="color: #92400e; text-decoration: none;">Grievance</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 8px; font-size: 16px;">Contact</div>
+                        <div style="font-size: 14px; color: #475569;">
+                            <p style="margin-bottom: 4px;"><i class="fas fa-phone" style="margin-right: 8px;"></i>+91 9830833381</p>
+                            <p style="margin-bottom: 4px;"><i class="fas fa-envelope" style="margin-right: 8px;"></i>ramlalla.developers2gmail.com</p>
+                            <p style="margin-bottom: 16px;"><i class="fas fa-map-marker" style="margin-right: 8px;"></i>India</p>
+                        </div>
+                        <p style="font-size: 12px; color: #64748b; margin-top: 16px;">
+                            © <span id="year"></span> Ram Lalla Developers. All rights reserved.
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Set year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Home navigation function
+        function navigateToHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            
+            // Function to show a specific section
+            function showSection(sectionId) {
+                // Remove active class from all nav links
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Hide all sections
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show the selected section
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+                
+                // Add active class to current nav link
+                const activeLink = document.querySelector(`[data-target="${sectionId}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+                
+                // Update URL hash
+                window.location.hash = sectionId;
+            }
+            
+            // Add click event listeners to all navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('data-target');
+                    if (target) {
+                        showSection(target);
+                    }
+                });
+            });
+            
+            // Check URL hash on page load
+            if (window.location.hash) {
+                const targetId = window.location.hash.substring(1);
+                if (document.getElementById(targetId)) {
+                    showSection(targetId);
+                } else {
+                    showSection('company');
+                }
+            } else {
+                // Default to showing the company section
+                showSection('company');
+            }
+        });
+
+        // Language selector functionality
+        const languageToggle = document.getElementById('languageToggle');
+        const languageDropdown = document.getElementById('languageDropdown');
+
+        if (languageToggle && languageDropdown) {
+            languageToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                languageDropdown.classList.toggle('show');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!languageToggle.contains(e.target) && !languageDropdown.contains(e.target)) {
+                    languageDropdown.classList.remove('show');
+                }
+            });
+
+            // Handle language selection
+            const languageOptions = document.querySelectorAll('.language-option');
+            languageOptions.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const lang = this.getAttribute('data-lang');
+                    const langName = this.textContent.split('(')[0].trim();
+
+                    // Remove active class from all options
+                    languageOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to selected option
+                    this.classList.add('active');
+
+                    // Update button text
+                    const buttonSpan = languageToggle.querySelector('span');
+                    if (buttonSpan) {
+                        buttonSpan.textContent = langName;
+                    }
+
+                    // Handle translation
+                    if (lang === 'en') {
+                        window.location.hash = '';
+                        if (window.location.hash) {
+                            window.location.reload();
+                        }
+                    } else {
+                        window.location.hash = '#googtrans(en|' + lang + ')';
+                        window.location.reload();
+                    }
+
+                    // Close dropdown
+                    languageDropdown.classList.remove('show');
+                });
+            });
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                // Add search logic here
+                console.log('Searching for:', query);
+            });
+
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.toLowerCase();
+                    // Handle search submission
+                    console.log('Search submitted:', query);
+                }
+            });
+        }
+
+        // Google Translate integration
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,ml,or,pa',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false,
+                multilanguagePage: true
+            }, 'google_translate_element');
+        }
+
+        // Load Google Translate script
+        (function() {
+            var gtScript = document.createElement('script');
+            gtScript.type = 'text/javascript';
+            gtScript.async = true;
+            gtScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+            gtScript.onerror = function() {
+                console.log('Google Translate failed to load');
+            };
+            document.head.appendChild(gtScript);
+        })();
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Home' || (e.ctrlKey && e.key === 'h')) {
+                e.preventDefault();
+                navigateToHome();
+            }
+        });
+    </script>
+</body>
+</html>

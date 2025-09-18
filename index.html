@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1200, initial-scale=0.3, user-scalable=yes" />
+    <title>Ram Lalla Developers — Building Better Cities</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        beige: {
+                            DEFAULT: '#E9DEC9',
+                            50: '#FBF8F6',
+                            100: '#F7F2EA',
+                            200: '#EFE2C9',
+                            300: '#E6D2A8',
+                            500: '#D1B77E',
+                            700: '#A6864F'
+                        },
+                        gold: '#C69C6D',
+                        ink: '#1f2937',
+                        paper: '#ffffff'
+                    },
+                    boxShadow: {
+                        soft: '0 10px 30px rgba(31,41,55,0.06)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter','ui-sans-serif','system-ui','sans-serif'],
+                        display: ['Playfair Display','serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Fixed layout container */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+            min-width: 1200px;
+        }
+
+        .main-container {
+            width: 1200px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Header with search */
+        .header-bar {
+            position: relative;
+            z-index: 30;
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 25px;
+            background: rgba(255,255,255,0.95);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: rgba(255,255,255,0.8);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Search Results */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            margin-top: 8px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .search-results.show {
+            display: block;
+            animation: fadeInScale 0.2s ease;
+        }
+
+        .search-result-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-result-item:hover {
+            background-color: #f9fafb;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-title {
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .search-result-category {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* Language selector */
+        .language-selector {
+            position: relative;
+        }
+
+        .language-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: white;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-1px);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            padding: 8px;
+            min-width: 200px;
+            z-index: 1000;
+            display: none;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .language-dropdown.show {
+            display: block;
+            animation: fadeInScale 0.2s ease;
+        }
+
+        .language-option {
+            display: block;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            color: #374151;
+            text-decoration: none;
+        }
+
+        .language-option:hover {
+            background: #f3f4f6;
+            color: #8B4513;
+        }
+
+        .language-option.active {
+            background: #8B4513;
+            color: white;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Sidebar styles */
+        .sidebar-left, .sidebar-right {
+            position: absolute;
+            top: 60px;
+            bottom: 0;
+            width: 220px;
+            background: linear-gradient(180deg, #F7F3EE, #F0E6D8);
+            overflow: visible;
+            z-index: 20;
+        }
+
+        .sidebar-left {
+            left: 0;
+            border-right: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .sidebar-right {
+            right: 0;
+            border-left: 1px solid rgba(0,0,0,0.06);
+        }
+
+        /* Main content area */
+        .content-area {
+            margin: 60px 220px 0 220px;
+            min-height: calc(100vh - 60px);
+            background: white;
+        }
+
+        /* Navigation items */
+        .nav-item {
+            display: block;
+            padding: 14px 20px;
+            color: #374151;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 14px;
+            position: relative;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: linear-gradient(135deg, rgba(139,69,19,0.1) 0%, rgba(160,82,45,0.08) 100%);
+            color: #8B4513;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(139,69,19,0.15) 0%, rgba(255,255,255,0.9) 100%);
+            color: #8B4513;
+            font-weight: 700;
+            border-left: 4px solid #8B4513;
+            box-shadow: inset 0 0 20px rgba(139,69,19,0.1);
+        }
+
+        /* Navigation arrows */
+        .nav-arrow {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 11px;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .nav-arrow::before {
+            content: "►";
+            display: inline-block;
+            font-family: Arial, sans-serif;
+            font-weight: normal;
+        }
+
+        .nav-item:hover .nav-arrow {
+            color: #8B4513;
+        }
+
+        .nav-item.active .nav-arrow {
+            transform: translateY(-50%) rotate(90deg);
+            color: #8B4513;
+        }
+
+        /* Sub-navigation arrows */
+        .sub-nav-arrow {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 9px;
+            color: rgba(255,255,255,0.7);
+            transition: all 0.3s ease;
+        }
+
+        .sub-nav-arrow::before {
+            content: "►";
+            display: inline-block;
+            font-family: Arial, sans-serif;
+            font-weight: normal;
+        }
+
+        .nav-panel-item:hover .sub-nav-arrow {
+            color: white;
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        /* Side panel for subsections */
+        .nav-panel {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            width: 280px;
+            background: linear-gradient(135deg, rgba(139,69,19,0.95) 0%, rgba(160,82,45,0.9) 100%);
+            backdrop-filter: blur(15px);
+            border-radius: 0 12px 12px 0;
+            box-shadow: 5px 0 25px rgba(0,0,0,0.2);
+            padding: 0;
+            z-index: 25;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .nav-dropdown.active .nav-panel {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .nav-panel-header {
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .nav-panel-item {
+            display: block;
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-panel-item.has-sub {
+            padding-right: 40px;
+        }
+
+        .nav-panel-item:hover {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding-left: 24px;
+        }
+
+        .nav-panel-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Third level navigation panel */
+        .sub-nav-panel {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            width: 250px;
+            background: linear-gradient(135deg, rgba(101,37,13,0.95) 0%, rgba(120,52,25,0.9) 100%);
+            backdrop-filter: blur(15px);
+            border-radius: 0 12px 12px 0;
+            box-shadow: 5px 0 25px rgba(0,0,0,0.3);
+            padding: 0;
+            z-index: 30;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .nav-panel-item.sub-active .sub-nav-panel {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .sub-nav-panel-header {
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .sub-nav-panel-item {
+            display: block;
+            padding: 10px 20px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .sub-nav-panel-item:hover {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding-left: 24px;
+        }
+
+        .sub-nav-panel-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Dropdown container */
+        .nav-dropdown {
+            position: relative;
+        }
+
+        /* Hero section */
+        .hero {
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background-image: url('ram2.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(139,69,19,0.7) 0%, rgba(160,82,45,0.5) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            font-weight: 500;
+            opacity: 0.95;
+        }
+
+        /* Video Section Styles - Instagram Reels Format */
+        .video-section {
+            background: linear-gradient(135deg, #E9DEC9 0%, #F7F2EA 50%, #E6D2A8 100%);
+            padding: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/></filter></defs><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.03"/></svg>');
+            pointer-events: none;
+        }
+
+        .video-container {
+            max-width: 320px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .video-frame {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 
+                0 0 0 8px rgba(139,69,19,0.1),
+                0 0 0 12px rgba(139,69,19,0.05),
+                0 20px 60px rgba(139,69,19,0.3),
+                inset 0 0 0 2px rgba(255,255,255,0.8);
+            background: linear-gradient(45deg, #D1B77E, #C69C6D);
+            backdrop-filter: blur(20px);
+            transform: perspective(1000px) rotateY(-2deg) rotateX(2deg);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            aspect-ratio: 9/16;
+        }
+
+        .video-frame:hover {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.02);
+            box-shadow: 
+                0 0 0 8px rgba(139,69,19,0.15),
+                0 0 0 12px rgba(139,69,19,0.1),
+                0 30px 80px rgba(139,69,19,0.4),
+                inset 0 0 0 2px rgba(255,255,255,0.9);
+        }
+
+        .video-frame::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, 
+                rgba(139,69,19,0.3), 
+                rgba(160,82,45,0.2), 
+                rgba(205,133,63,0.3),
+                rgba(139,69,19,0.3));
+            border-radius: 25px;
+            filter: blur(15px);
+            z-index: -1;
+        }
+
+        .video-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 18px;
+            background: #000;
+            position: relative;
+            z-index: 1;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(139,69,19,0.1) 0%, transparent 50%, rgba(139,69,19,0.1) 100%);
+            border-radius: 18px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Marquee notices */
+        .marq {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .marq .inner {
+            display: inline-block;
+            padding-right: 50%;
+            animation: scroll 30s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            padding: 60px 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .contact-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 24px;
+        }
+
+        .contact-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .contact-link {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: white;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        /* Hide Google Translate default elements */
+        .goog-te-banner-frame,
+        .goog-te-menu-frame {
+            display: none !important;
+        }
+
+        .goog-te-combo {
+            display: none !important;
+        }
+
+        body {
+            top: 0 !important;
+        }
+
+        #google_translate_element {
+            display: none !important;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            body {
+                min-width: auto;
+            }
+            
+            .main-container {
+                width: 100%;
+            }
+
+            .video-frame {
+                max-width: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .video-frame {
+                max-width: 250px;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-900">
+    <div class="main-container">
+        <!-- Professional Header Bar -->
+        <header class="header-bar">
+            <div class="flex items-center gap-4">
+                <img src="RLD_logo.png" alt="Ram Lalla Developers Logo" class="w-12 h-12 rounded-lg border-2 border-white/30 object-cover"/>
+                <div class="text-white">
+                    <div class="font-bold text-lg">Ram Lalla Developers</div>
+
+                </div>
+            </div>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search services, departments, information..." id="searchInput">
+                    <div class="search-results" id="searchResults"></div>
+                </div>
+            </div>
+            
+            <div class="language-selector">
+                <button class="language-btn" id="languageToggle">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                    <i class="fas fa-chevron-down" style="font-size: 10px;"></i>
+                </button>
+                <div class="language-dropdown" id="languageDropdown">
+                    <a href="#" class="language-option active" data-lang="en">English</a>
+                    <a href="#" class="language-option" data-lang="hi">हिंदी (Hindi)</a>
+                    <a href="#" class="language-option" data-lang="bn">বাংলা (Bengali)</a>
+                    <a href="#" class="language-option" data-lang="te">తెలుగు (Telugu)</a>
+                    <a href="#" class="language-option" data-lang="mr">मराठी (Marathi)</a>
+                    <a href="#" class="language-option" data-lang="ta">தமிழ் (Tamil)</a>
+                    <a href="#" class="language-option" data-lang="ur">اردو (Urdu)</a>
+                    <a href="#" class="language-option" data-lang="gu">ગુજરાતી (Gujarati)</a>
+                </div>
+            </div>
+            
+            <div id="google_translate_element" class="hidden"></div>
+        </header>
+
+        <!-- Left sidebar navigation -->
+        <nav class="sidebar-left">
+            <div class="p-4">
+                <!-- Ram Lalla Developers with expanded subsections -->
+                <div class="nav-dropdown">
+                    <a class="nav-item" href="#" data-section="ramlalla">
+                        Ram Lalla Developers
+                        <span class="nav-arrow"></span>
+                    </a>
+                    <div class="nav-panel">
+                        <div class="nav-panel-header">Ram Lalla Developers</div>
+                        
+                        <!-- Construction with sub-sections -->
+                        <div class="nav-panel-item has-sub" data-subsection="construction">
+                            Construction
+                            <span class="sub-nav-arrow"></span>
+                            <div class="sub-nav-panel">
+                                <div class="sub-nav-panel-header">Construction Services</div>
+                                <a class="sub-nav-panel-item" href="ramlalla-construction.html">Residential Construction</a>
+                                <a class="sub-nav-panel-item" href="ramlalla-construction.html">Commercial Construction</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Land Development with sub-sections -->
+                        <div class="nav-panel-item has-sub" data-subsection="land-development">
+                            Land Development
+                            <span class="sub-nav-arrow"></span>
+                            <div class="sub-nav-panel">
+                                <div class="sub-nav-panel-header">Land Development</div>
+                                <a class="sub-nav-panel-item" href="commercial-plotting.html">Commercial Land Plotting</a>
+                                <a class="sub-nav-panel-item" href="residential-plotting.html">Residential Land Plotting</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Interior Designer with sub-sections -->
+                        <div class="nav-panel-item has-sub" data-subsection="interior">
+                            Interior Designer
+                            <span class="sub-nav-arrow"></span>
+                            <div class="sub-nav-panel">
+                                <div class="sub-nav-panel-header">Interior Design</div>
+                                <a class="sub-nav-panel-item" href="interior-designer.html">Commercial Project</a>
+                                <a class="sub-nav-panel-item" href="interior-designer.html">Residential Project</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Supplier with sub-sections -->
+                        <div class="nav-panel-item has-sub" data-subsection="supplier">
+                            Supplier
+                            <span class="sub-nav-arrow"></span>
+                            <div class="sub-nav-panel">
+                                <div class="sub-nav-panel-header">Supply Services</div>
+                                <a class="sub-nav-panel-item" href="#main-power-supply">Main Power Supply</a>
+                                <a class="sub-nav-panel-item" href="#material-supply">Material Supply</a>
+                                <a class="sub-nav-panel-item" href="#cement">Cement</a>
+                                <a class="sub-nav-panel-item" href="#sand">Sand</a>
+                                <a class="sub-nav-panel-item" href="#bricks">Bricks</a>
+                                <a class="sub-nav-panel-item" href="#stone-chips">Stone Chips</a>
+                                <a class="sub-nav-panel-item" href="#iron">Iron</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ram Lalla Logistics with subsections -->
+                <div class="nav-dropdown">
+                    <a class="nav-item" href="#" data-section="logistics">
+                        Ram Lalla Logistics
+                        <span class="nav-arrow"></span>
+                    </a>
+                    <div class="nav-panel">
+                        <div class="nav-panel-header">Ram Lalla Logistics</div>
+                        <a class="nav-panel-item" href="ramlalla-logistics.html">Kolkata</a>
+                        <a class="nav-panel-item" href="ramlalla-logistics.html">Mumbai</a>
+                        <a class="nav-panel-item" href="ramlalla-logistics.html">Asansol</a>
+                    </div>
+                </div>
+
+                <!-- Ram Lalla Foundation with subsections -->
+                <div class="nav-dropdown">
+                    <a class="nav-item" href="ramlalla-foundation.html" data-section="foundation">
+                        Ram Lalla Foundation
+                        <span class="nav-arrow"></span>
+                    </a>
+                    <div class="nav-panel">
+                        <div class="nav-panel-header">Ram Lalla Foundation</div>
+                        <a class="nav-panel-item" href="ramlalla-foundation.html">Blood Donation</a>
+                        <a class="nav-panel-item" href="ramlalla-foundation.html">Old Age Home</a>
+                        <a class="nav-panel-item" href="ramlalla-foundation.html">Donation to Orphans</a>
+                        <a class="nav-panel-item" href="ramlalla-foundation.html">Medical Supply</a>
+                        <a class="nav-panel-item" href="ramlalla-foundation.html">Food Supply</a>
+                    </div>
+                </div>
+
+                <a class="nav-item" href="ramlalla-transport.html">Ram Lalla Transport</a>
+                <a class="nav-item" href="ramlalla-microfinance.html">Ram Lalla Micro Finance</a>
+
+                <!-- About Us with subsections -->
+                <div class="nav-dropdown">
+                    <a class="nav-item" href="about.html" data-section="about">
+                        About Us
+                        <span class="nav-arrow"></span>
+                    </a>
+                    <div class="nav-panel">
+                        <div class="nav-panel-header">About Us</div>
+                        <a class="nav-panel-item" href="about.html">Company Overview</a>
+                        <a class="nav-panel-item" href="about.html">Vastu Compliance</a>
+                        <a class="nav-panel-item" href="about.html">Modern Design</a>
+                        <a class="nav-panel-item" href="about.html">Heritage Touch</a>
+                        <a class="nav-panel-item" href="about.html">Timely Delivery</a>
+                        <a class="nav-panel-item" href="about.html">Legal Clarity</a>
+                        <a class="nav-panel-item" href="about.html">Why Choose Us</a>
+                        <a class="nav-panel-item" href="about.html">Quality Assurance</a>
+                    </div>
+                </div>
+
+                <a class="nav-item" href="profile.html">Profile</a>
+                <a class="nav-item" href="projects.html">Projects</a>
+                <a class="nav-item" href="certificates.html">Certificates</a>
+                <a class="nav-item" href="director-dashboard.html">Director Dashboard</a>
+
+                <!-- Online Services with subsections -->
+                <div class="nav-dropdown">
+                    <a class="nav-item" href="online-services.html" data-section="services">
+                        Online Services
+                        <span class="nav-arrow"></span>
+                    </a>
+                   
+                 
+                </div>
+            </div>
+        </nav>
+
+        <!-- Right sidebar -->
+        <nav class="sidebar-right">
+            <div class="px-4 pt-6 pb-4">
+                <div class="bg-white rounded-lg p-4 shadow-lg text-center">
+                    <img src="" alt="Director - Suvrajit Deb Manna" class="mx-auto w-24 h-24 rounded-lg object-cover border-2 border-gray-200"/>
+                    <div class="font-semibold mt-3 text-sm">Suvrajit Deb Manna</div>
+                    <div class="text-xs text-gray-600">Director</div>
+                    <div class="text-xs text-amber-700 mt-1">Ram Lalla Developers</div>
+                </div>
+                
+                <div class="mt-6 bg-white rounded-lg p-3 shadow-md">
+                    <div class="font-semibold text-sm mb-2">Quick Links</div>
+                    <ul class="text-sm space-y-2">
+                        <li><a href="projects.html" class="text-amber-700 hover:underline">Featured Projects</a></li>
+                        <li><a href="about.html" class="text-amber-700 hover:underline">About Company</a></li>
+                        <li><a href="online-services.html" class="text-amber-700 hover:underline">Services</a></li>
+                        <li><a href="#careers" class="text-amber-700 hover:underline">Careers</a></li>
+                    </ul>
+                </div>
+                
+                <div class="mt-4 bg-white rounded-lg p-3 shadow-md">
+                    <div class="font-semibold text-sm mb-2">Contact Info</div>
+                    <div class="text-xs text-gray-600 space-y-2">
+                        <div>Industry House 10 Camac Street</div>
+                        <div>11th floor, Kolkata-700017</div>
+                        <div class="pt-2">
+                            <a class="block text-amber-700" href="mailto:ramlalla.developers@gmail.com">ramlalla.developers@gmail.com</a>
+                            <a class="block text-amber-700 mt-1" href="tel:+919830833381">+91 9830833381</a>
+                            <a class="block text-amber-700 mt-1" href="https://www.ramlallaa.in" target="_blank">www.ramlallaa.in</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main content area -->
+        <div class="content-area" id="root">
+            <!-- Hero section -->
+            <section class="hero">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <h1 class="hero-title">Ram Lalla Developers</h1>
+                    <p class="hero-subtitle">AN INITIATION TOWARDS THE DEVELOPMENT OF THE NATION</p>
+                </div>
+            </section>
+
+            <!-- Marquee Notices -->
+            <section class="bg-gradient-to-r from-amber-50 to-amber-100 border-b">
+                <div class="px-6 py-4 flex items-center gap-4">
+                    <span class="inline-flex items-center gap-2 rounded-full bg-amber-200 text-amber-900 px-3 py-1 text-sm font-semibold">
+                        <i class="fas fa-bullhorn"></i>
+                        Updates
+                    </span>
+                    <div class="marq flex-1">
+                        <div class="inner text-sm font-medium">
+                        
+                            <a href="#" class="mr-12 text-amber-800 hover:text-amber-900">An initiation towards the development of nation </a>
+                            <a href="#" class="mr-12 text-amber-800 hover:text-amber-900">Announcement: ramlallaa.in published finally</a>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main content -->
+            <section class="px-6 py-8">
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 bg-white rounded-xl p-8 shadow-lg border">
+                        <h2 class="font-bold text-3xl text-gray-800 mb-4">Welcome to Ram Lalla Developers</h2>
+                        <p class="text-gray-700 leading-relaxed mb-6">Ram Lalla Developers is committed to delivering professional infrastructure, housing and urban projects that help the nation grow. We follow clear procurement, compliance and environmental guidelines to ensure value and transparency.</p>
+                        <p class="text-gray-700 leading-relaxed mb-6">Under the leadership of Director Suvrajit Deb Manna, we have established ourselves as a trusted partner in construction, land development, logistics, and community foundation work across West Bengal and beyond.</p>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-amber-100 to-amber-200 rounded-xl p-6 shadow-lg">
+                        <h3 class="font-bold text-xl text-amber-900 mb-4">Quick Services</h3>
+                        <ul class="space-y-3 text-sm">
+                            <li><a href="ramlalla-construction.html" class="flex items-center gap-3 text-amber-800 hover:text-amber-900 transition-colors">
+                                <i class="fas fa-hammer w-4"></i>
+                                Construction Services
+                            </a></li>
+                            <li><a href="land-development.html" class="flex items-center gap-3 text-amber-800 hover:text-amber-900 transition-colors">
+                                <i class="fas fa-map-marked-alt w-4"></i>
+                                Land Development
+                            </a></li>
+                            <li><a href="ramlalla-logistics.html" class="flex items-center gap-3 text-amber-800 hover:text-amber-900 transition-colors">
+                                <i class="fas fa-truck w-4"></i>
+                                Logistics Services
+                            </a></li>
+                            <li><a href="ramlalla-foundation.html" class="flex items-center gap-3 text-amber-800 hover:text-amber-900 transition-colors">
+                                <i class="fas fa-heart w-4"></i>
+                                Foundation Work
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Video Section - Instagram Reels Format -->
+            <section class="video-section">
+                <div class="video-container">
+                    <div class="video-frame">
+                        <iframe 
+                            class="video-iframe"
+                            src="abir.mp4" 
+                            title="Ram Lalla Developers - Building Better Cities"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                        <div class="video-overlay"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats section -->
+            <section class="bg-gradient-to-r from-amber-700 to-amber-800 text-white">
+                <div class="px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div>
+                        <div class="text-3xl font-bold mb-2"></div>
+                        <div class="text-amber-100 text-sm">Years Experience</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold mb-2"></div>
+                        <div class="text-amber-100 text-sm">Completed Projects</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold mb-2"></div>
+                        <div class="text-amber-100 text-sm">Municipal Works</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold mb-2"></div>
+                        <div class="text-amber-100 text-sm">Safety Compliant</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Enhanced Contact Section -->
+            <section class="contact-section" id="contact">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4">Contact Ram Lalla Developers</h2>
+                    <p class="text-lg opacity-90">Connect with us for all your development and construction needs</p>
+                </div>
+                
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-title">Head Office</div>
+                        <div class="contact-info">
+                            Industry House 10 Camac Street<br>
+                            11th floor, Kolkata-700017<br>
+                            West Bengal, India
+                        </div>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="contact-title">Director</div>
+                        <div class="contact-info">
+                            Suvrajit Deb Manna<br>
+                            <a href="tel:+919830833381" class="contact-link">+91 9830833381</a><br>
+                            Strategic Leadership & Operations
+                        </div>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-title">Email</div>
+                        <div class="contact-info">
+                            <a href="mailto:ramlalla.developers@gmail.com" class="contact-link">
+                                ramlalla.developers@gmail.com
+                            </a><br>
+                            Business Inquiries & Support
+                        </div>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="contact-title">Website</div>
+                        <div class="contact-info">
+                            <a href="https://www.ramlallaa.in" target="_blank" class="contact-link">
+                                www.ramlallaa.in
+                            </a><br>
+                            Complete Service Portfolio
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="bg-amber-100 text-gray-900 border-t">
+                <div class="px-6 py-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="md:col-span-2 lg:col-span-1">
+                        <div class="font-bold text-xl text-gray-800">Ram Lalla Developers</div>
+                        <p class="text-sm text-gray-600 mt-3 leading-relaxed">Professional urban & infrastructure solutions for a resilient nation.</p>
+                        <div class="text-xs text-gray-500 mt-3">
+                            Director: Suvrajit Deb Manna
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-semibold mb-3 text-base text-gray-800">Quick Links</div>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li><a href="#services" class="hover:text-amber-700 transition-colors">Services</a></li>
+                            <li><a href="#projects" class="hover:text-amber-700 transition-colors">Projects</a></li>
+                            <li><a href="#contact" class="hover:text-amber-700 transition-colors">Contact</a></li>
+                            <li><a href="#about" class="hover:text-amber-700 transition-colors">About</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="font-semibold mb-3 text-base text-gray-800">Resources</div>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li><a href="#careers" class="hover:text-amber-700 transition-colors">Careers</a></li>
+                            <li><a href="#grievance" class="hover:text-amber-700 transition-colors">Grievance</a></li>
+                            <li><a href="#policies" class="hover:text-amber-700 transition-colors">Policies</a></li>
+                            <li><a href="#foundation" class="hover:text-amber-700 transition-colors">Foundation</a></li>
+                        </ul>
+                    </div>
+                    <div class="md:col-span-2 lg:col-span-1">
+                        <p class="text-xs text-gray-600">
+                            © <span id="year">2025</span> Ram Lalla Developers. All rights reserved. 
+                            <br><br>Website: <a href="https://www.ramlallaa.in" class="text-amber-700 hover:underline" target="_blank">www.ramlallaa.in</a>
+                            <br>Created by <a href="https://abirkayal.netlify.app" target="_blank" class="text-amber-700 hover:underline">Abir Kayal</a>
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Enhanced search functionality with comprehensive data
+        const searchData = [
+            // Ram Lalla Developers
+            { title: "Construction", category: "Ram Lalla Developers", url: "ramlalla-construction.html" },
+            { title: "Residential Construction", category: "Construction Services", url: "ramlalla-construction.html" },
+            { title: "Commercial Construction", category: "Construction Services", url: "ramlalla-construction.html" },
+            { title: "Land Development", category: "Ram Lalla Developers", url: "land-development.html" },
+            { title: "Commercial Land Plotting", category: "Land Development", url: "commercial-plotting.html" },
+            { title: "Residential Land Plotting", category: "Land Development", url: "residential-plotting.html" },
+            { title: "Interior Designer", category: "Ram Lalla Developers", url: "interior-design.html" },
+            { title: "Commercial Project", category: "Interior Design", url: "commercial-plotting.html" },
+            { title: "Residential Project", category: "Interior Design", url: "residential-plotting.html" },
+            { title: "Supplier", category: "Ram Lalla Developers", url: "#supplier" },
+            { title: "Main Power Supply", category: "Supply Services", url: "#main-power-supply" },
+            { title: "Material Supply", category: "Supply Services", url: "#material-supply" },
+            { title: "Cement", category: "Material Supply", url: "#cement" },
+            { title: "Sand", category: "Material Supply", url: "#sand" },
+            { title: "Bricks", category: "Material Supply", url: "#bricks" },
+            { title: "Stone Chips", category: "Material Supply", url: "#stone-chips" },
+            { title: "Iron", category: "Material Supply", url: "#iron" },
+            
+            // Ram Lalla Logistics
+            { title: "Ram Lalla Logistics", category: "Services", url: "ramlalla-logistics.html" },
+            { title: "Kolkata", category: "Ram Lalla Logistics", url: "ramlalla-logistics.html" },
+            { title: "Mumbai", category: "Ram Lalla Logistics", url: "#mumbai" },
+            { title: "Asansol", category: "Ram Lalla Logistics", url: "#asansol" },
+            
+            // Ram Lalla Foundation
+            { title: "Ram Lalla Foundation", category: "Services", url: "#foundation" },
+            { title: "Blood Donation", category: "Ram Lalla Foundation", url: "#blood-donation" },
+            { title: "Old Age Home", category: "Ram Lalla Foundation", url: "#old-age-home" },
+            { title: "Donation to Orphans", category: "Ram Lalla Foundation", url: "#orphan-donation" },
+            { title: "Medical Supply", category: "Ram Lalla Foundation", url: "#medical-supply" },
+            { title: "Food Supply", category: "Ram Lalla Foundation", url: "#food-supply" },
+            
+            // Other Services
+            { title: "Ram Lalla Transport", category: "Services", url: "#transport" },
+            { title: "Ram Lalla Micro Finance", category: "Services", url: "#microfinance" },
+            
+            // About Us
+            { title: "Company Overview", category: "About Us", url: "#company-overview" },
+            { title: "Vastu Compliance", category: "About Us", url: "#vastu-compliance" },
+            { title: "Modern Design", category: "About Us", url: "#modern-design" },
+            { title: "Heritage Touch", category: "About Us", url: "#heritage-touch" },
+            { title: "Timely Delivery", category: "About Us", url: "#timely-delivery" },
+            { title: "Legal Clarity", category: "About Us", url: "#legal-clarity" },
+            { title: "Why Choose Us", category: "About Us", url: "#why-choose-us" },
+            { title: "Quality Assurance", category: "About Us", url: "#quality-assurance" },
+            
+            // Company Info
+            { title: "Profile", category: "Company", url: "#profile" },
+            { title: "Projects", category: "Company", url: "#projects" },
+            { title: "Certificates", category: "Company", url: "#certificates" },
+            { title: "Director Dashboard", category: "Company", url: "#director" },
+            { title: "Suvrajit Deb Manna", category: "Leadership", url: "#director" },
+            
+            // Online Services
+            { title: "Property Tax Payment", category: "Online Services", url: "#property-tax" },
+            { title: "Building Permits", category: "Online Services", url: "#building-permits" },
+            { title: "Water Connection", category: "Online Services", url: "#water-connection" },
+            { title: "Trade License", category: "Online Services", url: "#trade-license" },
+            { title: "Project Consultation", category: "Online Services", url: "#project-consultation" },
+            { title: "Loan Services", category: "Online Services", url: "#loan-services" },
+            
+            // Contact Information
+            { title: "Contact", category: "Information", url: "#contact" },
+            { title: "Camac Street Office", category: "Contact", url: "#contact" },
+            { title: "Kolkata Office", category: "Contact", url: "#contact" },
+            { title: "+91 9830833381", category: "Contact", url: "#contact" },
+            { title: "ramlalla.developers@gmail.com", category: "Contact", url: "#contact" },
+            { title: "www.ramlallaa.in", category: "Contact", url: "#contact" }
+        ];
+
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        function performSearch(query) {
+            if (!query.trim()) {
+                searchResults.classList.remove('show');
+                return;
+            }
+
+            const filteredResults = searchData.filter(item =>
+                item.title.toLowerCase().includes(query.toLowerCase()) ||
+                item.category.toLowerCase().includes(query.toLowerCase())
+            );
+
+            displaySearchResults(filteredResults, query);
+        }
+
+        function displaySearchResults(results, query) {
+            searchResults.innerHTML = '';
+
+            if (results.length === 0) {
+                searchResults.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search text-gray-400 mb-2"></i>
+                        <p>No results found for "${query}"</p>
+                    </div>
+                `;
+            } else {
+                results.slice(0, 10).forEach(result => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-result-item';
+                    resultItem.innerHTML = `
+                        <div class="search-result-title">${highlightMatch(result.title, query)}</div>
+                        <div class="search-result-category">${result.category}</div>
+                    `;
+                    resultItem.addEventListener('click', () => {
+                        if (result.url.startsWith('#')) {
+                            const element = document.querySelector(result.url);
+                            if (element) {
+                                element.scrollIntoView({ behavior: 'smooth' });
+                            }
+                        } else {
+                            window.location.href = result.url;
+                        }
+                        searchResults.classList.remove('show');
+                        searchInput.value = result.title;
+                    });
+                    searchResults.appendChild(resultItem);
+                });
+            }
+
+            searchResults.classList.add('show');
+        }
+
+        function highlightMatch(text, query) {
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<strong>$1</strong>');
+        }
+
+        // Search input event listeners
+        searchInput.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        searchInput.addEventListener('focus', (e) => {
+            if (e.target.value.trim()) {
+                performSearch(e.target.value);
+            }
+        });
+
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                searchResults.classList.remove('show');
+                searchInput.blur();
+            } else if (e.key === 'Enter') {
+                const firstResult = searchResults.querySelector('.search-result-item');
+                if (firstResult) {
+                    firstResult.click();
+                }
+            }
+        });
+
+        // Close search results when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.classList.remove('show');
+            }
+        });
+
+        // Enhanced Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navItems = document.querySelectorAll('.nav-item[data-section]');
+            const navDropdowns = document.querySelectorAll('.nav-dropdown');
+            const subNavItems = document.querySelectorAll('.nav-panel-item[data-subsection]');
+
+            // Handle main navigation items
+            navItems.forEach(item => {
+                const dropdown = item.closest('.nav-dropdown');
+                
+                item.addEventListener('mouseenter', function() {
+                    navDropdowns.forEach(d => {
+                        if (d !== dropdown) {
+                            d.classList.remove('active');
+                            d.querySelector('.nav-item').classList.remove('active');
+                        }
+                    });
+                    
+                    dropdown.classList.add('active');
+                    this.classList.add('active');
+                });
+
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const isActive = dropdown.classList.contains('active');
+                    
+                    navDropdowns.forEach(d => {
+                        d.classList.remove('active');
+                        d.querySelector('.nav-item').classList.remove('active');
+                    });
+                    
+                    if (!isActive) {
+                        dropdown.classList.add('active');
+                        this.classList.add('active');
+                    }
+                });
+            });
+
+            // Handle sub-navigation items with third level
+            subNavItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    // Close other sub-panels
+                    subNavItems.forEach(subItem => {
+                        if (subItem !== item) {
+                            subItem.classList.remove('sub-active');
+                        }
+                    });
+                    
+                    // Open current sub-panel
+                    this.classList.add('sub-active');
+                });
+
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const isActive = this.classList.contains('sub-active');
+                    
+                    subNavItems.forEach(subItem => {
+                        subItem.classList.remove('sub-active');
+                    });
+                    
+                    if (!isActive) {
+                        this.classList.add('sub-active');
+                    }
+                });
+            });
+
+            // Close all panels when mouse leaves sidebar
+            const sidebar = document.querySelector('.sidebar-left');
+            sidebar.addEventListener('mouseleave', function() {
+                setTimeout(() => {
+                    navDropdowns.forEach(d => {
+                        d.classList.remove('active');
+                        d.querySelector('.nav-item').classList.remove('active');
+                    });
+                    
+                    subNavItems.forEach(item => {
+                        item.classList.remove('sub-active');
+                    });
+                }, 300);
+            });
+
+            // Keep panels open when hovering over them
+            document.querySelectorAll('.nav-panel, .sub-nav-panel').forEach(panel => {
+                panel.addEventListener('mouseenter', function() {
+                    const dropdown = this.closest('.nav-dropdown');
+                    if (dropdown) {
+                        dropdown.classList.add('active');
+                        dropdown.querySelector('.nav-item').classList.add('active');
+                    }
+                    
+                    const subItem = this.closest('.nav-panel-item[data-subsection]');
+                    if (subItem) {
+                        subItem.classList.add('sub-active');
+                    }
+                });
+            });
+        });
+        
+
+        // Language selector functionality
+        const languageToggle = document.getElementById('languageToggle');
+        const languageDropdown = document.getElementById('languageDropdown');
+
+        if (languageToggle && languageDropdown) {
+            languageToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                languageDropdown.classList.toggle('show');
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!languageToggle.contains(e.target) && !languageDropdown.contains(e.target)) {
+                    languageDropdown.classList.remove('show');
+                }
+            });
+
+            const languageOptions = document.querySelectorAll('.language-option');
+            languageOptions.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const lang = this.getAttribute('data-lang');
+                    const langName = this.textContent.split('(')[0].trim();
+
+                    languageOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const buttonSpan = languageToggle.querySelector('span');
+                    if (buttonSpan) {
+                        buttonSpan.textContent = langName;
+                    }
+
+                    if (lang === 'en') {
+                        window.location.hash = '';
+                        if (window.location.hash) {
+                            window.location.reload();
+                        }
+                    } else {
+                        window.location.hash = '#googtrans(en|' + lang + ')';
+                        window.location.reload();
+                    }
+
+                    languageDropdown.classList.remove('show');
+                });
+            });
+        }
+
+        // Google Translate integration
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,ml,or,pa',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false,
+                multilanguagePage: true
+            }, 'google_translate_element');
+        }
+
+        // Load Google Translate script
+        (function() {
+            var gtScript = document.createElement('script');
+            gtScript.type = 'text/javascript';
+            gtScript.async = true;
+            gtScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+            document.head.appendChild(gtScript);
+        })();
+
+        // Smooth scrolling for internal links
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('a[href^="#"]')) {
+                e.preventDefault();
+                const targetId = e.target.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+       c
+    
+    // Get the video iframe (only on main page)
+    const videoIframe = document.querySelector('.video-iframe');
+    
+    if (videoIframe) {
+        // Get the current src
+        const currentSrc = videoIframe.getAttribute('src');
+        
+        // Add autoplay parameter
+        if (currentSrc && !currentSrc.includes('autoplay')) {
+            // Check if URL already has parameters
+            const separator = currentSrc.includes('?') ? '&' : '?';
+            videoIframe.setAttribute('src', currentSrc + separator + 'autoplay=1&mute=1');
+        }
+        
+        // Add event listener to restart video when it comes into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Video is in view, ensure it's playing
+                    videoIframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                } else {
+                    // Video is out of view, pause it
+                    videoIframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        observer.observe(videoIframe);
+    }
+    
+    
+    
+    
+
+
+    </script>
+</body>
+</html>
